@@ -1,7 +1,7 @@
 {
   "postgresql": {
-    "user": "root",
-    "password": "root",
+    "user": "admin",
+    "password": "PassW0rd",
     "host": "postgres",
     "port": 5432,
     "database": "db"
@@ -9,8 +9,8 @@
   "mongodb": {
     "url": "mongodb://user:pass@mongo:27017/db"
   },
-  "user": "root",
-  "password": "root",
+  "user": "admin",
+  "password": "PassW0rd",
   "host": "postgres",
   "port": 5432,
   "database": "db"
