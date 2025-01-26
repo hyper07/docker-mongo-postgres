@@ -8,7 +8,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - ./db/postgresql:/var/lib/postgresql/data
+      - db-postgres:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: PassW0rd
@@ -35,7 +35,7 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - ./db/mongodb:/var/lib/mongo/data
+      - "db-mongodb:/var/lib/mongo/data"
       - "$PWD/mongo-entrypoint/:/docker-entrypoint-initdb.d/"
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
@@ -76,9 +76,11 @@ services:
     networks:
       - webnet
 
-# volumes:
-#   db-data:
-#     driver: local
+volumes:
+  db-postgres:
+    driver: local
+  db-mongodb:
+    driver: local
 
 networks:
   webnet:
