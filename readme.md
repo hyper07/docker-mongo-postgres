@@ -14,3 +14,14 @@ docker-compose up -d
 # to stop and delete it :
 docker-compose down
 ```
+
+## MongoDB
+```
+# how to access MongoDB from browser:
+localhost:8081
+```
+## PostgreSQL
+```
+# how to access PostgreSQL from browser:
+localhost:8080
+```
