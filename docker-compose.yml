@@ -8,10 +8,10 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - ./db/postgresql:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: PassW0rd
       POSTGRES_DB: db
       PGDATA: /var/lib/postgresql/data
     networks:
@@ -21,6 +21,8 @@ services:
     container_name: adminer
     image: adminer
     restart: always
+    depends_on:
+      - postgres
     ports:
       - 8080:8080
     networks:
@@ -33,11 +35,11 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - "db-data:/var/lib/mongo/data"
+      - ./db/mongodb:/var/lib/mongo/data
       - "$PWD/mongo-entrypoint/:/docker-entrypoint-initdb.d/"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: PassW0rd
       MONGO_INITDB_DATABASE: db
     networks:
       - webnet
@@ -46,11 +48,15 @@ services:
     container_name: mongo-express
     image: mongo-express
     restart: always
+    depends_on:
+      - mongo
     ports:
       - 8081:8081
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: root
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: PassW0rd
+      ME_CONFIG_MONGODB_URL: mongodb://admin:PassW0rd@mongo:27017/
+      ME_CONFIG_BASICAUTH: false
     networks:
       - webnet
 
@@ -70,9 +76,9 @@ services:
     networks:
       - webnet
 
-volumes:
-  db-data:
-    driver: local
+# volumes:
+#   db-data:
+#     driver: local
 
 networks:
   webnet:
