@@ -88,6 +88,7 @@ services:
     depends_on:
       - "mongo"
       - "postgres"
+      - "neo4j"
     command: ["/wait-for-it.sh", "postgres:5432", "--", "npm", "run", "prod"]
     ports:
       - "3000:3000"
