@@ -24,7 +24,7 @@ services:
     depends_on:
       - postgres
     ports:
-      - 8080:8080
+      - 8090:8080
     networks:
       - webnet
 
@@ -60,6 +60,27 @@ services:
     networks:
       - webnet
 
+  neo4j:
+    # user: neo4j:neo4j
+    container_name: neo4j
+    image: neo4j
+    ports:
+      - 7687:7687
+      - 7474:7474
+    volumes:
+      - db-neo4j:/data
+    environment:
+      - NEO4J_AUTH=${NEO4J_USERNAME-neo4j}/${NEO4J_PASSWORD-password}
+      - NEO4J_PLUGINS=["apoc"]
+      - NEO4J_db_tx__log_rotation_retention__policy=false
+      - NEO4J_dbms_security_procedures_unrestricted=apoc.*
+    healthcheck:
+        test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider localhost:7474 || exit 1"]
+        interval: 15s
+        timeout: 30s
+        retries: 10
+    networks:
+      - webnet
   app:
     container_name: app
     build: ./app
@@ -80,6 +101,8 @@ volumes:
   db-postgres:
     driver: local
   db-mongodb:
+    driver: local
+  db-neo4j:
     driver: local
 
 networks:

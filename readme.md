@@ -20,8 +20,15 @@ docker-compose down
 # how to access MongoDB from browser:
 localhost:8081
 ```
+
 ## PostgreSQL
 ```
 # how to access PostgreSQL from browser:
 localhost:8080
+```
+
+## Neo4J
+```
+# how to access Neo4J from browser:
+localhost:7474
 ```
