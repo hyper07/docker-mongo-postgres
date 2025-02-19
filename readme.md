@@ -31,4 +31,32 @@ localhost:8080
 ```
 # how to access Neo4J from browser:
 localhost:7474
+    login id: neo4j
+    password: password
+```
+
+## Jupyter
+```
+# how to access Jupyter from browser:
+localhost:8888
+```
+
+## PgAdmin
+```
+# how to access PgAdmin from browser:
+localhost:5050
+
+DB connection:
+    hostname:postgres
+    port:5432
+    database:db
+    username:admin
+    password:PassW0rd
+
+```
+
+## Adminer
+```
+# how to access Jupyter from browser:
+localhost:8090
 ```

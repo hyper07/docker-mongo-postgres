@@ -17,6 +17,22 @@ services:
     networks:
       - webnet
 
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+       - pgadmin:/var/lib/pgadmin
+
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    networks:
+      - webnet
+    restart: unless-stopped
+
   adminer:
     container_name: adminer
     image: adminer
@@ -81,6 +97,19 @@ services:
         retries: 10
     networks:
       - webnet
+
+  jupyter:
+    build: 
+      context: .
+      dockerfile: ./docker/jupyter/Dockerfile
+    volumes:
+      - ./work:/home/jovyan/work
+    ports:
+      - 8888:8888
+      - 5001:5001
+
+    command: "start-notebook.sh --NotebookApp.token="
+
   app:
     container_name: app
     build: ./app
@@ -104,6 +133,8 @@ volumes:
   db-mongodb:
     driver: local
   db-neo4j:
+    driver: local
+  pgadmin:
     driver: local
 
 networks:
