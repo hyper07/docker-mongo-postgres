@@ -1,10 +1,8 @@
-version: "3.1"
 
 services:
   postgres:
     container_name: postgres
     image: postgres
-    restart: always
     ports:
       - 5432:5432
     volumes:
@@ -25,18 +23,19 @@ services:
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
       PGADMIN_CONFIG_SERVER_MODE: 'False'
     volumes:
+       - ./work:/home
+       - ./work:/mnt/workspace
        - pgadmin:/var/lib/pgadmin
 
     ports:
       - "${PGADMIN_PORT:-5050}:80"
+      - "${PGADMIN_PORT:-5053}:443"
     networks:
       - webnet
-    restart: unless-stopped
 
   adminer:
     container_name: adminer
     image: adminer
-    restart: always
     depends_on:
       - postgres
     ports:
@@ -47,7 +46,6 @@ services:
   mongo:
     container_name: mongo
     image: mongo
-    restart: always
     ports:
       - 27017:27017
     volumes:
@@ -63,7 +61,6 @@ services:
   mongo-express:
     container_name: mongo-express
     image: mongo-express
-    restart: always
     depends_on:
       - mongo
     ports:
@@ -107,13 +104,13 @@ services:
     ports:
       - 8888:8888
       - 5001:5001
-
+    networks:
+      - webnet
     command: "start-notebook.sh --NotebookApp.token="
 
   app:
     container_name: app
     build: ./app
-    restart: always
     depends_on:
       - "mongo"
       - "postgres"
